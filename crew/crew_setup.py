@@ -32,7 +32,8 @@ def run_crew(historico):
         agents=[agente],
         tasks=[task],
         process=Process.sequential,
-        verbose=False
+        verbose=False,
+        memory=False
     )
 
     resultado = crew.kickoff(

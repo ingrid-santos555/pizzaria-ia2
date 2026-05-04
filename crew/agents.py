@@ -96,5 +96,6 @@ responda SOMENTE com o JSON abaixo.
 Não escreva nenhuma frase antes ou depois do JSON.
 """,
         llm=llm,
-        verbose=False
+        verbose=False,
+        memory=False,
     )
