@@ -2,7 +2,8 @@ import os
 import json
 
 from dotenv import load_dotenv
-from crewai import Crew, Process, LLM
+from crewai import Crew, Process
+from openai import OpenAI
 
 from crew.agents import coletor_pedido_agent
 from crew.tasks import coletar_pedido_task
@@ -12,11 +13,9 @@ from crew.tools import CARDAPIO
 load_dotenv()
 
 
-llm = LLM(
-    model="gpt-4.1",
-    api_key=os.getenv("OPENAI_API_KEY"),
-    temperature=0
-)
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+llm = client
 
 
 def formatar_historico(historico):
