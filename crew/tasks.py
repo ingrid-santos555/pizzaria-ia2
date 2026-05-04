@@ -1,9 +1,9 @@
 from crewai import Task
 
 
-def coletar_pedido_task(agent):
+def coletar_pedido_task(agent, historico_conversa, cardapio):
     return Task(
-        description="""
+        description=f"""
 Você receberá o histórico de uma conversa entre cliente e atendente de pizzaria.
 
 Histórico da conversa:
@@ -41,8 +41,8 @@ REGRAS
 - Nunca invente informações.
 - Nunca invente sabores que não estejam no cardápio.
 - Nunca escreva explicações.
-- O sabor do pedido é SEMPRE o último sabor mencionado pelo cliente. Ignore sabores de mensagens anteriores que foram substituídos.
-- Nunca combine sabores de mensagens diferentes a menos que o cliente tenha pedido explicitamente mais de um sabor na mesma mensagem.
+- O sabor do pedido é SEMPRE o último sabor mencionado pelo cliente.
+- Nunca combine sabores de mensagens diferentes a menos que o cliente tenha pedido explicitamente.
 - Nunca gere texto junto com o JSON.
 """,
         agent=agent,

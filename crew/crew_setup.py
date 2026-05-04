@@ -31,7 +31,7 @@ def run_crew(historico):
     historico_texto = formatar_historico(historico)
 
     agente = coletor_pedido_agent(llm)
-    task = coletar_pedido_task(agente)
+    task = coletar_pedido_task(agente, historico_texto, CARDAPIO)  # ✅ passa direto
     crew = Crew(
         agents=[agente],
         tasks=[task],
@@ -40,14 +40,9 @@ def run_crew(historico):
         memory=False
     )
 
-    resultado = crew.kickoff(
-        inputs={
-            "historico_conversa": historico_texto,
-            "cardapio": CARDAPIO
-        }
-    )
+    resultado = crew.kickoff()  # ✅ sem inputs
 
-    resposta_raw = str(resultado.raw).strip()
+    resposta_raw = str(resultado).strip()  # ✅ 0.10.0 retorna string, não .raw
     resposta_raw = resposta_raw.replace("```json", "").replace("```", "").strip()
 
     try:
