@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    margin: 0;
+    background: linear-gradient(135deg, #FFCC80, #FFF3E0);
+}
+
+/* NAVBAR */
+.navbar {
+  display: flex;
+  justify-content: flex-end; /* 👉 direita */
+  align-items: center;
+  background: #fff;
+  padding: 15px;
+  border-bottom: 3px solid #000;
+}
+
+.navbar div {
+  display: flex;
+  gap: 15px;
+}
+
+.navbar a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #000;
+}
+
+.navbar a:hover {
+    color: #a84300;
+}
+
+/* CONTAINER (FORM MAIS PRA BAIXO) */
+.container {
+    max-width: 500px;
+    width: 100%;
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 12px;
+    margin: 35px auto 20px auto; /* 👈 DESCE O FORM */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.container .title {
+    font-size: 20px;
+    font-weight: 500;
+    position: relative;
+}
+
+.container .title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 30px;
+    background: orangered;
+}
+
+/* INPUTS */
+.user-details {
+    margin-top: 15px;
+}
+
+.user-details .input-box {
+    margin-bottom: 10px;
+}
+
+.user-details .input-box input {
+    height: 38px;
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding-left: 15px;
+}
+
+/* BOTÃO */
+form .button {
+    margin-top: 20px;
+}
+
+form .button input {
+    height: 50px;
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    background: linear-gradient(135deg, #FF9800, #FFCC80);
+    cursor: pointer;
+}

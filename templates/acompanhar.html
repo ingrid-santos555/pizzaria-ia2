@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acompanhar Pedido</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-top: #ffe0b2;
+      --bg-bottom: #e64a00;
+      --surface: rgba(255,255,255,0.35);
+      --surface2: rgba(255,255,255,0.2);
+      --border: rgba(180,60,0,0.25);
+      --accent: #b71c1c;
+      --accent2: #7f0000;
+      --text: #2d0000;
+      --muted: #7a2800;
+      --done-bg: #bf360c;
+      --done-text: #fff;
+      --danger: #b71c1c;
+    }
+
+    body {
+      background: linear-gradient(160deg, var(--bg-top) 0%, #ff8c42 50%, var(--bg-bottom) 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+    }
+
+    .container { width: 100%; max-width: 420px; }
+
+    .header { text-align: center; margin-bottom: 2.5rem; }
+
+    .pizza-icon {
+      font-size: 56px;
+      display: block;
+      margin-bottom: 1rem;
+      animation: float 3s ease-in-out infinite;
+      filter: drop-shadow(0 4px 12px rgba(100,0,0,0.25));
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--accent2);
+    }
+
+    .header p { color: var(--muted); font-size: 13px; margin-top: 4px; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(100,0,0,0.12);
+    }
+
+    .card-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .pedido-info {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .token-pill {
+      display: inline-block;
+      margin-top: 10px;
+      background: rgba(180,60,0,0.12);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 11px;
+      color: var(--muted);
+      font-family: monospace;
+    }
+
+    /* Timeline */
+    .timeline { display: flex; flex-direction: column; }
+    .step { display: flex; align-items: flex-start; gap: 16px; }
+    .step-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+
+    .dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      border: 1.5px solid rgba(180,60,0,0.3);
+      background: rgba(255,255,255,0.3);
+      color: var(--muted);
+      transition: all 0.4s ease;
+      z-index: 1;
+    }
+
+    .dot.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+      box-shadow: 0 0 18px rgba(183,28,28,0.4);
+      animation: pulseDot 1.5s ease-in-out infinite;
+    }
+
+    .dot.done {
+      background: var(--done-bg);
+      border-color: var(--done-bg);
+      color: var(--done-text);
+      font-weight: 800;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(183,28,28,0.4); }
+      50% { box-shadow: 0 0 0 10px rgba(183,28,28,0); }
+    }
+
+    .line {
+      width: 2px;
+      height: 36px;
+      margin: 2px 0;
+      background: rgba(180,60,0,0.2);
+      transition: background 0.4s ease;
+    }
+
+    .line.done { background: var(--done-bg); }
+
+    .step-content { padding-top: 5px; padding-bottom: 2rem; }
+
+    .step-title { font-size: 14px; font-weight: 500; color: var(--muted); transition: color 0.4s; }
+    .step-title.active { color: var(--accent); font-weight: 600; }
+    .step-title.done { color: var(--text); font-weight: 600; }
+
+    .step-sub { font-size: 12px; color: var(--muted); margin-top: 2px; opacity: 0.8; }
+
+    .status-msg {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 1rem;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(8px);
+    }
+
+    .cancelado-box {
+      background: rgba(183,28,28,0.1);
+      border: 1px solid rgba(183,28,28,0.4);
+      border-radius: 12px;
+      padding: 1rem;
+      color: var(--danger);
+      text-align: center;
+      font-size: 14px;
+      font-weight: 500;
+      display: none;
+      margin-bottom: 1rem;
+    }
+
+    #timer-box {
+      background: rgba(255,255,255,0.25);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 1rem;
+      display: none;
+      backdrop-filter: blur(6px);
+    }
+
+    #timer-box span { color: var(--accent); font-weight: 700; }
+
+    #cancelar-btn {
+      width: 100%;
+      padding: 12px;
+      background: rgba(183,28,28,0.08);
+      border: 1.5px solid rgba(183,28,28,0.4);
+      border-radius: 12px;
+      color: var(--danger);
+      font-size: 14px;
+      font-weight: 500;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      display: none;
+    }
+
+    #cancelar-btn:hover {
+      background: rgba(183,28,28,0.15);
+      border-color: var(--danger);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <span class="pizza-icon">🍕</span>
+      <h1>Acompanhar pedido</h1>
+      <p id="header-sub">Carregando informações...</p>
+    </div>
+
+    <div class="card">
+      <p class="card-label">Seu pedido</p>
+      <p class="pedido-info" id="pedido-info">—</p>
+      <span class="token-pill" id="token-pill"></span>
+    </div>
+
+    <div class="card" id="timeline-card">
+      <p class="card-label" style="margin-bottom:1.2rem;">Status</p>
+      <div class="timeline">
+        <div class="step">
+          <div class="step-left">
+            <div class="dot done" id="dot-0">✓</div>
+            <div class="line done" id="line-0"></div>
+          </div>
+          <div class="step-content">
+            <p class="step-title done">Pedido recebido</p>
+            <p class="step-sub">A pizzaria recebeu seu pedido</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-left">
+            <div class="dot" id="dot-1">2</div>
+            <div class="line" id="line-1"></div>
+          </div>
+          <div class="step-content">
+            <p class="step-title" id="title-1">Em preparo</p>
+            <p class="step-sub">Nossa equipe está preparando sua pizza</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-left">
+            <div class="dot" id="dot-2">3</div>
+            <div class="line" id="line-2" style="visibility:hidden;"></div>
+          </div>
+          <div class="step-content">
+            <p class="step-title" id="title-2">A caminho</p>
+            <p class="step-sub">Entregador saiu para a entrega</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cancelado-box" id="cancelado-box">❌ Pedido cancelado.</div>
+    <div class="status-msg" id="status-msg"><span>Atualizando...</span></div>
+    <div id="timer-box">⏱ Cancelamento disponível por mais <span id="timer-count">—</span></div>
+    <button id="cancelar-btn">Cancelar pedido</button>
+  </div>
+
+  <script>
+    const token = window.location.pathname.split("/").pop();
+    document.getElementById("token-pill").textContent = "# " + token.slice(0, 10).toUpperCase();
+
+    const statusIdx = { novo: 0, preparo: 1, entrega: 2, entregue: 3, cancelado: -1 };
+    const msgs = [
+      "Seu pedido foi recebido! Em breve começamos o preparo. 🍕",
+      "Sua pizza está sendo preparada com carinho! 🔥",
+      "Entregador a caminho — fique de olho! 🛵",
+      "Pedido entregue. Bom apetite! 🍕"
+    ];
+
+    let createdAt = null;
+    let timerInterval = null;
+
+    function atualizarTimer() {
+      if (!createdAt) return;
+      const diff = 120 - Math.floor((Date.now() - createdAt.getTime()) / 1000);
+      const btn = document.getElementById("cancelar-btn");
+      const timerBox = document.getElementById("timer-box");
+
+      if (diff <= 0) {
+        btn.style.display = "none";
+        timerBox.style.display = "none";
+        clearInterval(timerInterval);
+        return;
+      }
+
+      btn.style.display = "block";
+      timerBox.style.display = "block";
+      const min = Math.floor(diff / 60);
+      const sec = diff % 60;
+      document.getElementById("timer-count").textContent =
+        min > 0 ? `${min}m ${sec}s` : `${sec}s`;
+    }
+
+    function renderStatus(status, data) {
+      if (data) {
+        const tam = data.tamanho ? ` (${data.tamanho})` : "";
+        document.getElementById("pedido-info").textContent =
+          `${data.quantidade}x pizza de ${data.sabor}${tam}`;
+        document.getElementById("header-sub").textContent =
+          status === "cancelado" ? "Pedido cancelado" : "Atualizando a cada 5 segundos";
+
+        if (data.created_at && !createdAt) {
+          createdAt = new Date(data.created_at + "Z");
+          atualizarTimer();
+          timerInterval = setInterval(atualizarTimer, 1000);
+        }
+      }
+
+      if (status === "cancelado") {
+        document.getElementById("timeline-card").style.display = "none";
+        document.getElementById("cancelado-box").style.display = "block";
+        document.getElementById("cancelar-btn").style.display = "none";
+        document.getElementById("timer-box").style.display = "none";
+        document.getElementById("status-msg").textContent = "Este pedido foi cancelado.";
+        clearInterval(timerInterval);
+        return;
+      }
+
+      const idx = statusIdx[status] ?? 0;
+
+      for (let i = 1; i <= 2; i++) {
+        const dot = document.getElementById(`dot-${i}`);
+        const title = document.getElementById(`title-${i}`);
+        const line = document.getElementById(`line-${i - 1}`);
+
+        dot.className = "dot";
+        title.className = "step-title";
+
+        if (idx > i) {
+          dot.className = "dot done";
+          dot.textContent = "✓";
+          title.className = "step-title done";
+          if (line) line.className = "line done";
+        } else if (idx === i) {
+          dot.className = "dot active";
+          dot.textContent = i + 1;
+          title.className = "step-title active";
+        } else {
+          dot.textContent = i + 1;
+        }
+      }
+
+      document.getElementById("status-msg").textContent = msgs[Math.min(idx, msgs.length - 1)];
+
+      if (status === "entregue") {
+        document.getElementById("cancelar-btn").style.display = "none";
+        document.getElementById("timer-box").style.display = "none";
+        clearInterval(timerInterval);
+      }
+    }
+
+    async function carregar() {
+      try {
+        const res = await fetch(`/pedido/${token}`);
+        const data = await res.json();
+        if (data.error) {
+          document.getElementById("status-msg").textContent = "Pedido não encontrado.";
+          return;
+        }
+        renderStatus(data.status, data);
+      } catch (e) {
+        document.getElementById("status-msg").textContent = "Erro ao atualizar. Tentando novamente...";
+      }
+    }
+
+    document.getElementById("cancelar-btn").onclick = async () => {
+      if (!confirm("Tem certeza que deseja cancelar o pedido?")) return;
+      await fetch(`/pedido/${token}/cancelar`, { method: "POST" });
+      carregar();
+    };
+
+    setInterval(carregar, 5000);
+    carregar();
+  </script>
+</body>
+</html>

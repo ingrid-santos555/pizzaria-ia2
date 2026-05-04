@@ -1,0 +1,101 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom, #ff8c00, #ffe5b4);
+}
+
+/* NAVBAR */
+.navbar {
+  display: flex;
+  justify-content: flex-end; /* 👉 direita */
+  align-items: center;
+  background: #fff;
+  padding: 15px;
+  border-bottom: 3px solid #000;
+}
+
+.navbar div {
+  display: flex;
+  gap: 15px;
+}
+
+.navbar a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #000;
+}
+
+.navbar a:hover {
+  color: #a84300;
+  transition: 0.2s;
+}
+
+/* CONTAINER */
+.container {
+  padding: 20px;
+}
+
+/* TÍTULO */
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* DOWNLOAD (ESQUERDA) */
+.download {
+  display: flex;
+  justify-content: flex-start; /* 👈 ESQUERDA */
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* DROPDOWN */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown button {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 150px;
+  z-index: 1;
+}
+
+.dropdown-content div {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown-content div:hover {
+  background: #eee;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+th, td {
+  border: 2px solid #000;
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  background: #f2f2f2;
+}

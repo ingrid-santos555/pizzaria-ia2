@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='painel_gerenciamento.css') }}">
+</head>
+
+<body>
+
+<header>
+    <div class="header-left"></div>
+    <div class="header-right">
+        <a href="{{ url_for('index') }}">Página Inicial</a>
+        <a href="{{ url_for('logout') }}">Sair</a>
+    </div>
+</header>
+
+<section class="hero-section">
+    <h1>Painel de Gerenciamento</h1>
+</section>
+
+<div class="board">
+
+    <div class="column">
+        <h2>Novo Pedido</h2>
+        <div id="novo"></div>
+    </div>
+
+    <div class="column">
+        <h2>Em Preparo</h2>
+        <div id="preparo"></div>
+    </div>
+
+    <div class="column">
+        <h2>Saiu Entrega</h2>
+        <div id="entrega"></div>
+    </div>
+
+    <div class="column">
+        <h2>Finalizado</h2>
+        <div id="entregue"></div>
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='script_painel.js') }}"></script>
+</body>
+</html>

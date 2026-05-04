@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre nós</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='sobre_nos.css') }}">
+    </head>
+
+    <body>
+    <header class="top-menu">
+    <nav>
+        <a href="{{ url_for('pedido') }}">Voltar</a>
+    </nav>
+    </header>
+
+    <div class="overlay">
+    <div class="container">
+
+        <h1>Bamboo Slice 🍕</h1>
+
+        <p class="descricao">
+            A Bamboo Slice nasceu com o propósito de oferecer pizzas artesanais com sabor marcante,
+            combinando ingredientes de qualidade com um atendimento ágil e acolhedor.
+        </p>
+
+        <div class="bloco">
+            <h2>Missão</h2>
+            <p>
+                Proporcionar experiências únicas através de pizzas bem preparadas,
+                com entrega rápida e excelência no atendimento.
+            </p>
+        </div>
+
+        <div class="bloco">
+            <h2>Valores</h2>
+            <ul>
+                <li>Qualidade em cada detalhe</li>
+                <li>Compromisso com o cliente</li>
+                <li>Agilidade na entrega</li>
+                <li>Respeito e transparência</li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

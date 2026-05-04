@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='contato.css') }}">
+
+    <!-- ícones -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+<header class="top-menu">
+    <nav>
+        <a href="{{ url_for('pedido') }}">Voltar</a>
+    </nav>
+</header>
+
+<div class="overlay">
+    <div class="container">
+
+        <h1>Fale Conosco 📞</h1>
+
+        <p>Estamos prontos para atender você!</p>
+
+        <div class="contato-item">
+            <i class='bx bxl-whatsapp'></i>
+            <span>(19) 99999-9999</span>
+        </div>
+
+        <div class="contato-item">
+            <i class='bx bx-envelope'></i>
+            <span>contato@bambooslice.com</span>
+        </div>
+
+        <div class="contato-item">
+            <i class='bx bx-map'></i>
+            <span>Sumaré - SP</span>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

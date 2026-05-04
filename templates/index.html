@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área Interna</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Painel Interno</h1>
+    <p>Escolha uma das opções abaixo: </p>
+
+    <div class="menu">
+
+        <!-- TODO MUNDO PODE VER -->
+        <a href="{{ url_for('painel') }}">Painel de Gerenciamento</a>
+        <a href="{{ url_for('historico') }}">Histórico de Pedidos</a>
+
+        <!-- SÓ ADMIN -->
+        {% if is_admin %}
+            <a href="{{ url_for('formulario') }}">Cadastrar Funcionário</a>
+        {% endif %}
+
+    </div>
+
+    <div class="logout">
+        <a href="{{ url_for('logout') }}">Sair</a>
+    </div>
+
+</div>
+
+</body>
+</html>
