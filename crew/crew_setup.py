@@ -3,19 +3,14 @@ import json
 
 from dotenv import load_dotenv
 from crewai import Crew, Process
-from openai import OpenAI
 
 from crew.agents import coletor_pedido_agent
 from crew.tasks import coletar_pedido_task
 from crew.tools import CARDAPIO
 
-
 load_dotenv()
 
-
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
-llm = client
+llm = "gpt-4o-mini"  # ✅ só a string — CrewAI pega a API key do ambiente
 
 
 def formatar_historico(historico):
