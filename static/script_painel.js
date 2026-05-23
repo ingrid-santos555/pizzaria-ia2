@@ -98,10 +98,10 @@ function render() {
 
             div.innerHTML = `
                 <b>${order.nome_cliente}</b><br>
-                End: ${order.endereco}<br>
-                Pedido: ${resumoItens}<br>
-                Valor: R$ ${order.valor_total}<br>
-                Data: ${order.created_at}<br>
+                <b>End:</b> ${order.endereco}<br>
+                <b>Pedido:</b> ${resumoItens}<br>
+                <b>Valor:</b> R$ ${order.valor_total}<br>
+                <b>Data:</b> ${order.created_at}<br>
             `;
 
             // ▶️ AVANÇAR
