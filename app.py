@@ -65,9 +65,16 @@ def normalizar_tamanho(texto):
     return texto
 
 
-def calcular_valor(tamanho, quantidade):
-    preco = CARDAPIO["tamanhos"].get(tamanho, 0)
-    subtotal = preco * quantidade
+def calcular_valor(itens):
+    subtotal = 0
+    for item in itens:
+        quantidade = int(item.get("quantidade", 1))
+        sabores = item.get("sabores", [])
+        preco = max(
+            (CARDAPIO["sabores"].get(s.lower(), 0) for s in sabores),
+            default=0
+        )
+        subtotal += preco * quantidade
     total = subtotal + TAXA_ENTREGA
     return subtotal, total
 
@@ -125,6 +132,7 @@ def historico():
         return redirect("/login-page")
 
     return render_template("historico_tabela.html")
+
 
 # 🔒 PROTEÇÃO REAL DE ADMIN
 @app.route("/formulario")
@@ -192,10 +200,7 @@ def chat():
     dados = resposta
 
     try:
-        subtotal, valor_total = calcular_valor(
-            normalizar_tamanho(dados["tamanho"]),
-            int(dados["quantidade"])
-        )
+        subtotal, valor_total = calcular_valor(dados["itens"])
     except:
         return jsonify({"reply": "Erro ao processar pedido."})
 
@@ -204,13 +209,11 @@ def chat():
     novo_pedido = Pedido(
         nome_cliente=dados["nome_completo"],
         endereco=dados["endereco"],
-        sabor=dados["sabor"],
-        tamanho=normalizar_tamanho(dados["tamanho"]),
-        quantidade=int(dados["quantidade"]),
         valor_total=valor_total,
         status="novo",
         token=token
     )
+    novo_pedido.set_itens(dados["itens"])
 
     db.session.add(novo_pedido)
     db.session.commit()
@@ -219,17 +222,23 @@ def chat():
     session.pop("historico", None)
     session.modified = True
 
-    link = f"/pedido/{token}"
+    # monta resumo dos itens para exibir no chat
+    resumo_itens = ""
+    for item in dados["itens"]:
+        sabores = " e ".join(item["sabores"])
+        tamanho = normalizar_tamanho(item["tamanho"])
+        qtd = item["quantidade"]
+        resumo_itens += f"🍕 {qtd}x {sabores} ({tamanho})\n"
 
     return jsonify({
-    "reply": (
-        f"Pedido confirmado! 🍕\n\n"
-        f"🧾 {dados['quantidade']}x pizza de {dados['sabor']} ({normalizar_tamanho(dados['tamanho'])})\n"
-        f"📍 {dados['endereco']}\n"
-        f"💰 Total: R$ {valor_total:.2f}\n\n"
-        f"👉 Acompanhe seu pedido: /acompanhar/{token}"
-    )
-})
+        "reply": (
+            f"Pedido confirmado! 🍕\n\n"
+            f"{resumo_itens}"
+            f"📍 {dados['endereco']}\n"
+            f"💰 Total: R$ {valor_total:.2f}\n\n"
+            f"👉 Acompanhe seu pedido: /acompanhar/{token}"
+        )
+    })
 
 
 # ========================
@@ -245,9 +254,7 @@ def listar_pedidos():
             "id": p.id,
             "nome_cliente": p.nome_cliente,
             "endereco": p.endereco,
-            "sabor": p.sabor,
-            "tamanho": p.tamanho,
-            "quantidade": p.quantidade,
+            "itens": p.get_itens(),
             "valor_total": p.valor_total,
             "status": p.status,
             "created_at": p.created_at.strftime("%d/%m/%Y %H:%M") if p.created_at else "",
@@ -312,7 +319,7 @@ def criar_usuario():
 
 @app.route("/login", methods=["POST"])
 def login():
-    session.clear()  # 🔥 limpa sessão antiga
+    session.clear()
 
     data = request.json or {}
 
@@ -354,9 +361,7 @@ def get_pedido(token):
 
     return jsonify({
         "status": pedido.status,
-        "sabor": pedido.sabor,
-        "tamanho": pedido.tamanho,
-        "quantidade": pedido.quantidade,
+        "itens": pedido.get_itens(),
         "created_at": pedido.created_at.isoformat() if pedido.created_at else None
     })
 

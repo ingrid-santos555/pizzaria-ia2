@@ -1,9 +1,17 @@
 CARDAPIO = {
-   "sabores": ["calabresa", "mussarela", "frango"],
-   "tamanhos": {
-       "pequena": 45,
-       "media": 55,
-       "grande": 60
-   },
-   "taxa_entrega": 15
+    "sabores": {
+        "mussarela": 45,
+        "calabresa": 50,
+        "frango": 60
+    },
+
+    "tamanhos": [
+        "pequena",
+        "media",
+        "grande"
+    ],
+
+    "taxa_entrega": 15
 }
+
+

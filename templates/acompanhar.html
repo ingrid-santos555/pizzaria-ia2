@@ -99,7 +99,6 @@
       font-family: monospace;
     }
 
-    /* Timeline */
     .timeline { display: flex; flex-direction: column; }
     .step { display: flex; align-items: flex-start; gap: 16px; }
     .step-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
@@ -221,6 +220,29 @@
       background: rgba(183,28,28,0.15);
       border-color: var(--danger);
     }
+
+    #novo-pedido-btn {
+      display: block;
+      width: 100%;
+      margin-top: 0.75rem;
+      padding: 12px;
+      background: rgba(183,28,28,0.08);
+      border: 1.5px solid rgba(183,28,28,0.4);
+      border-radius: 12px;
+      color: var(--danger);
+      font-size: 14px;
+      font-weight: 500;
+      font-family: 'DM Sans', sans-serif;
+      text-align: center;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+      box-sizing: border-box;
+    }
+
+    #novo-pedido-btn:hover {
+      background: rgba(183,28,28,0.15);
+      border-color: var(--danger);
+    }
   </style>
 </head>
 <body>
@@ -277,6 +299,7 @@
     <div class="status-msg" id="status-msg"><span>Atualizando...</span></div>
     <div id="timer-box">⏱ Cancelamento disponível por mais <span id="timer-count">—</span></div>
     <button id="cancelar-btn">Cancelar pedido</button>
+    <a href="/" id="novo-pedido-btn">Fazer novo pedido 🍕</a>
   </div>
 
   <script>
@@ -317,9 +340,13 @@
 
     function renderStatus(status, data) {
       if (data) {
-        const tam = data.tamanho ? ` (${data.tamanho})` : "";
-        document.getElementById("pedido-info").textContent =
-          `${data.quantidade}x pizza de ${data.sabor}${tam}`;
+        if (data.itens && data.itens.length > 0) {
+          const resumo = data.itens.map(item =>
+            `${item.quantidade}x ${item.sabores.join(" e ")} (${item.tamanho})`
+          ).join(", ");
+          document.getElementById("pedido-info").textContent = resumo;
+        }
+
         document.getElementById("header-sub").textContent =
           status === "cancelado" ? "Pedido cancelado" : "Atualizando a cada 5 segundos";
 

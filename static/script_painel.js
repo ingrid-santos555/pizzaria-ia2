@@ -91,11 +91,15 @@ function render() {
             const div = document.createElement("div");
             div.className = `card ${order.status}`;
 
+            const itens = typeof order.itens === "string" ? JSON.parse(order.itens) : order.itens;
+            const resumoItens = itens.map(item =>
+                `${item.quantidade}x ${item.sabores.join(" e ")} (${item.tamanho})`
+            ).join(", ");
+
             div.innerHTML = `
                 <b>${order.nome_cliente}</b><br>
                 End: ${order.endereco}<br>
-                Pedido: ${order.sabor} (${order.tamanho})<br>
-                Qtd: ${order.quantidade}<br>
+                Pedido: ${resumoItens}<br>
                 Valor: R$ ${order.valor_total}<br>
                 Data: ${order.created_at}<br>
             `;

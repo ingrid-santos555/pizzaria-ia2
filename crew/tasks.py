@@ -24,9 +24,7 @@ INFORMAÇÕES NECESSÁRIAS DO PEDIDO
 
 - nome_completo
 - endereco
-- sabor
-- tamanho
-- quantidade
+- itens (cada item com: sabores, tamanho, quantidade)
 
 COMPORTAMENTO
 
@@ -41,8 +39,12 @@ REGRAS
 - Nunca invente informações.
 - Nunca invente sabores que não estejam no cardápio.
 - Nunca escreva explicações.
-- O sabor do pedido é SEMPRE o último sabor mencionado pelo cliente.
-- Nunca combine sabores de mensagens diferentes a menos que o cliente tenha pedido explicitamente.
+- Capture todos os sabores mencionados para o mesmo item.
+- "meia calabresa meia frango" = um item com sabores ["calabresa", "frango"].
+- Itens diferentes são objetos separados na lista.
+- Cada item do pedido deve ter seu próprio tamanho confirmado pelo cliente.
+- Nunca assuma que todos os itens têm o mesmo tamanho.
+- Se houver múltiplos itens e o tamanho de algum não foi informado, pergunte um por vez.
 - Nunca gere texto junto com o JSON.
 """,
         agent=agent,

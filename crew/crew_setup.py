@@ -2,8 +2,7 @@ import os
 import json
 
 from dotenv import load_dotenv
-from crewai import Crew, Process
-from langchain_openai import ChatOpenAI
+from crewai import Crew, Process, LLM
 
 from crew.agents import coletor_pedido_agent
 from crew.tasks import coletar_pedido_task
@@ -11,7 +10,7 @@ from crew.tools import CARDAPIO
 
 load_dotenv()
 
-llm = ChatOpenAI(
+llm = LLM(
     model="gpt-4o-mini",
     api_key=os.getenv("OPENAI_API_KEY")
 )
